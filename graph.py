@@ -1,10 +1,31 @@
 from plotly.graph_objs import Scatter
 from plotly.graph_objs import Candlestick
 from plotly.graph_objs import Scatter3d
-from typeutil import list_interval
+import numpy as np
+
+def list_interval(begin, end):
+    return [begin, end]
+
+def float_list(data_list):
+    return [float(x) for x in data_list]
+    
+def float_nparray(data_list):
+    return np.array(float_list(data_list))
+
+def flattened_list(structured_list):
+    if type(structured_list) != list:
+        structured_list = list(structured_list)
+        
+    if len(structured_list) == 0:
+        return []
+    elif type(structured_list[0]) == list:
+        return flattened_list(structured_list[0]) + flattened_list(structured_list[1:])
+    else:
+        return [structured_list[0]] + flattened_list(structured_list[1:])
+
 
 def figure(layout, *obj_tuple):
-    return dict(data=list(obj_tuple), layout=layout)
+    return dict(data=flattened_list(obj_tuple), layout=layout)
 
 def slider_layout(title, x_title, y_title):
     return dict(
