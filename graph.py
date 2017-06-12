@@ -23,6 +23,12 @@ def flattened_list(structured_list):
     else:
         return [structured_list[0]] + flattened_list(structured_list[1:])
 
+def dict_without_keys(dictionary, *key_tuple):
+    for k in key_tuple:
+        if k in dictionary:
+            dictionary.pop(k)
+            
+    return dictionary
 
 def figure(layout, *obj_tuple):
     return dict(data=flattened_list(obj_tuple), layout=layout)
@@ -51,7 +57,8 @@ def dots_3d(x, y, z, **attributes):
         y = y,
         z = z,
         mode = 'markers',
-        marker = attributes
+        name = attributes['name'] if 'name' in attributes else 'unnamed-dots',
+        marker = dict_without_keys(attributes, 'name')
     )
 
 def dots_2d(x, y, **attributes):
@@ -59,7 +66,8 @@ def dots_2d(x, y, **attributes):
         x = x,
         y = y,
         mode = 'markers',
-        marker = attributes
+        name = attributes['name'] if 'name' in attributes else 'unnamed-dots',
+        marker = dict_without_keys(attributes, 'name')
     )
 
 def candlestick(data_frame, col_open='Op', col_close='Close', col_high='High', col_low='Low'):
@@ -74,7 +82,8 @@ def trace_line(y, **attributes):
     return Scatter(
         y = y,
         mode = 'line',
-        line = attributes
+        name = attributes['name'] if 'name' in attributes else 'unnamed-line',
+        line = dict_without_keys(attributes, 'name')
     )   
 
 def vertical_line(x, y_begin, y_end, **attributes):
@@ -82,7 +91,8 @@ def vertical_line(x, y_begin, y_end, **attributes):
         x = list_interval(x, x),
         y = list_interval(y_begin, y_end),
         mode = 'line',
-        line = attributes
+        name = attributes['name'] if 'name' in attributes else 'unnamed-line',
+        line = dict_without_keys(attributes, 'name')
     )
 
 def horizontal_line(y, x_begin, x_end, **attributes):
@@ -90,7 +100,8 @@ def horizontal_line(y, x_begin, x_end, **attributes):
         x = list_interval(x_begin, x_end),
         y = list_interval(y, y),
         mode = 'line',
-        line = attributes
+        name = attributes['name'] if 'name' in attributes else 'unnamed-line',
+        line = dict_without_keys(attributes, 'name')
     )
 
 if __name__ == '__main__':
