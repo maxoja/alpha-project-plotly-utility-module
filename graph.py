@@ -13,15 +13,17 @@ def float_nparray(data_list):
     return np.array(float_list(data_list))
 
 def flattened_list(structured_list):
-    if type(structured_list) != list:
-        structured_list = list(structured_list)
+    result = []
+    
+    for index in range(len(structured_list)):
+        element = structured_list[index]
         
-    if len(structured_list) == 0:
-        return []
-    elif type(structured_list[0]) == list:
-        return flattened_list(structured_list[0]) + flattened_list(structured_list[1:])
-    else:
-        return [structured_list[0]] + flattened_list(structured_list[1:])
+        if type(element) == list:
+            result += flattened_list(element)
+        else:
+            result.append(element)
+            
+    return  result
 
 def dict_without_keys(dictionary, *key_tuple):
     for k in key_tuple:
@@ -76,6 +78,15 @@ def candlestick(data_frame, col_open='Op', col_close='Close', col_high='High', c
         close = data_frame[col_close],
         high = data_frame[col_high],
         low = data_frame[col_low]
+    )
+
+def trace_line_with_domain(y, x, **attributes):
+    return Scatter(
+        y = y,
+        x = x,
+        mode = 'line',
+        name = attributes['name'] if 'name' in attributes else 'unnamed-line',
+        line = dict_without_keys(attributes, 'name')
     )
 
 def trace_line(y, **attributes):
