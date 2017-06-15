@@ -1,6 +1,7 @@
 from plotly.graph_objs import Scatter
 from plotly.graph_objs import Candlestick
 from plotly.graph_objs import Scatter3d
+from plotly.plotly import plot as plotlyplot
 import numpy as np
 
 def list_interval(begin, end):
@@ -34,6 +35,11 @@ def dict_without_keys(dictionary, *key_tuple):
 
 def figure(layout, *obj_tuple):
     return dict(data=flattened_list(obj_tuple), layout=layout)
+
+def plot(layout, title, *obj_tuple):
+    fig = figure(layout, list(obj_tuple))
+    plotlyplot(fig, title=title)
+    
 
 def slider_layout(title, x_title, y_title):
     return dict(
